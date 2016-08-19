@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/AndroidDemo.iml" filepath="$PROJECT_DIR$/AndroidDemo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dashboardview/dashboardview.iml" filepath="$PROJECT_DIR$/dashboardview/dashboardview.iml" />
+      <module fileurl="file://$PROJECT_DIR$/linechart/linechart.iml" filepath="$PROJECT_DIR$/linechart/linechart.iml" />
+      <module fileurl="file://$PROJECT_DIR$/nestedscrollingdemo/nestedscrollingdemo.iml" filepath="$PROJECT_DIR$/nestedscrollingdemo/nestedscrollingdemo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/spiderwebchart/spiderwebchart.iml" filepath="$PROJECT_DIR$/spiderwebchart/spiderwebchart.iml" />
+    </modules>
+  </component>
+</project>
