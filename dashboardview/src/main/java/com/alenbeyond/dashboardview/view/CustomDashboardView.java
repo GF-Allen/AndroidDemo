@@ -1,17 +1,9 @@
 package com.alenbeyond.dashboardview.view;
 
-import android.animation.ObjectAnimator;
 import android.content.Context;
-import android.graphics.Matrix;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.view.animation.AnticipateOvershootInterpolator;
-import android.view.animation.DecelerateInterpolator;
 import android.view.animation.OvershootInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
@@ -22,7 +14,7 @@ import com.alenbeyond.dashboardview.R;
 /**
  * Created by Alen on 2016/8/18.
  */
-public class DashboardView extends RelativeLayout {
+public class CustomDashboardView extends RelativeLayout {
 
     private static final String TAG = "DashboardView";
     private Context context;
@@ -32,14 +24,14 @@ public class DashboardView extends RelativeLayout {
     private int maxScore = 950;
     private int minScore = 350;
 
-    public DashboardView(Context context, AttributeSet attrs) {
+    public CustomDashboardView(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
         initView();
     }
 
     private void initView() {
-        LayoutInflater.from(context).inflate(R.layout.view_dashboard, this, true);
+        LayoutInflater.from(context).inflate(R.layout.custom_dashboard, this, true);
     }
 
     @Override

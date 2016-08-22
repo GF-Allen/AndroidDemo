@@ -16,7 +16,7 @@
         android:layout_centerInParent="true"
         android:background="#ee88ee">
 
-        <com.alenbeyond.spiderwebchart.view.SpiderWebChart
+        <com.alenbeyond.spiderwebchart.view.CustomSpiderWebChart
             android:id="@+id/spider_web_chart"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

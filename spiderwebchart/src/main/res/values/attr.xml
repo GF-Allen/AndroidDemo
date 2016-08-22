@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="SpiderWebChart">
+    <declare-styleable name="CustomSpiderWebChart">
         <attr name="numData" format="integer" />
         <attr name="numScale" format="integer" />
         <attr name="lineStrokeWidth" format="float" />

@@ -13,7 +13,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:src="@mipmap/dashboard_bg" />
+            android:src="@mipmap/okscore_dashboard_bg" />
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -35,7 +35,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="center_horizontal"
-                    android:src="@mipmap/arrow" />
+                    android:src="@mipmap/okscore_arrow" />
 
             </LinearLayout>
 
@@ -45,7 +45,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
-                android:src="@mipmap/dashboard_white" />
+                android:src="@mipmap/okscore_dashboard_white" />
 
         </RelativeLayout>
 

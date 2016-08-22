@@ -1,6 +1,7 @@
 package com.alenbeyond.linechart.view;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -93,8 +94,7 @@ public class LineChartView extends View {
 
     private float mLeftMargin = ViewUtils.dip2px(getContext(), 15);
     private float mRightMargin = ViewUtils.dip2px(getContext(), 15);
-
-    private int buttomMargin = 30;
+    private float mBottomMargin = ViewUtils.dip2px(getContext(), 15);
 
     private String[] xValues = {"3月", "4月", "5月", "6月", "7月", "8月"}; // x轴参数
 
@@ -107,9 +107,41 @@ public class LineChartView extends View {
     private int mTouchPos; // 点击的位置
     private LineChartPop pop;
 
+    public LineChartView setDatas(int[] datas) {
+        this.datas = datas;
+        return this;
+    }
+
+    public LineChartView setxValues(String[] xValues) {
+        this.xValues = xValues;
+        return this;
+    }
+
+    public LineChartView setyValues(int[] yValues) {
+        this.yValues = yValues;
+        return this;
+    }
+
     public LineChartView(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
+
+        TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.LineChartView);
+        ySpacing = array.getDimension(R.styleable.LineChartView_lcvYSpacing, DEFAULT_Y_SPACING);
+        mRadius = array.getDimension(R.styleable.LineChartView_lcvRadius, ViewUtils.dip2px(getContext(), DEFAULT_RADIUS));
+        mLeftMargin = array.getDimension(R.styleable.LineChartView_lcvLeftMargin, ViewUtils.dip2px(getContext(), 15));
+        mRightMargin = array.getDimension(R.styleable.LineChartView_lcvRightMargin, ViewUtils.dip2px(getContext(), 15));
+        mBottomMargin = array.getDimension(R.styleable.LineChartView_lcvBottomMargin, ViewUtils.dip2px(getContext(), 15));
+        mYAxisTextSize = array.getDimension(R.styleable.LineChartView_lcvYAxisTextSize, DEFAULT_Y_AXIS_TEXT_SIZE);
+        mXAxisTextSize = array.getDimension(R.styleable.LineChartView_lcvXAxisTextSize, DEFAULT_X_AXIS_TEXT_SIZE);
+
+        mYAxisTextColor = array.getColor(R.styleable.LineChartView_lcvYAxisTextColor, DEFAULT_Y_AXIS_TEXT_COLOR);
+        mXAxisTextColor = array.getColor(R.styleable.LineChartView_lcvXAxisTextColor, DEFAULT_X_AXIS_TEXT_COLOR);
+        mDashedLineColor = array.getColor(R.styleable.LineChartView_lcvDashedLineColor, DEFAULT_DASHED_LINE_COLOR);
+        mCircleColor = array.getColor(R.styleable.LineChartView_lcvCircleColor, DEFAULT_CIRCLE_COLOR);
+        mLoopColor = array.getColor(R.styleable.LineChartView_lcvLoopColor, DEFAULT_LOOP_COLOR);
+        mLineColor = array.getColor(R.styleable.LineChartView_lcvLineColor, DEFAULT_LINE_COLOR);
+
         init();
     }
 
@@ -225,10 +257,11 @@ public class LineChartView extends View {
     ArrayList<PointF> mDataPoint = new ArrayList<>();
 
     private void drawYAxisText(Canvas canvas) {
+        PointF textX = getTextWidthAndHeight(xValues[0], mXAxisTextPaint);
         if (yValues != null) {
             for (int i = 0; i < yValues.length; i++) {
                 float x = mLeftMargin;
-                float y = height - (i * ySpacing) - 80;
+                float y = height - (i * ySpacing) - mBottomMargin * 2 - textX.y;
                 canvas.drawText(String.valueOf(yValues[i]), x, y, mYAxisTextPaint);
                 //保存当前文字的y坐标
                 PointF point = getTextWidthAndHeight(String.valueOf(yValues[i]), mYAxisTextPaint);
@@ -247,7 +280,7 @@ public class LineChartView extends View {
 
             xSpacing = (width - mYPoint.get(0).x - yw) / xValues.length;
             for (int i = 0; i < xValues.length; i++) {
-                float y = height - buttomMargin;
+                float y = height - mBottomMargin;
                 float x = mYPoint.get(0).x + yw + i * xSpacing;
                 canvas.drawText(xValues[i], x, y, mXAxisTextPaint);
 
@@ -319,17 +352,17 @@ public class LineChartView extends View {
         if (isTouch) {
             PointF point = mXPoint.get(mTouchPos);
             PointF textP = getTextWidthAndHeight(xValues[0], mXAxisTextPaint);
-            RectF rectLoop = new RectF(point.x - textP.x / 2 - ViewUtils.dip2px(context, 6),
+            RectF rectLoop = new RectF(point.x - textP.x / 2 - ViewUtils.dip2px(context, 8),
                     point.y - textP.y / 2 - ViewUtils.dip2px(context, 3),
-                    point.x + textP.x / 2 + ViewUtils.dip2px(context, 6),
-                    point.y + textP.y / 2 + ViewUtils.dip2px(context, 4));
+                    point.x + textP.x / 2 + ViewUtils.dip2px(context, 8),
+                    point.y + textP.y / 2 + ViewUtils.dip2px(context, 3));
             canvas.drawRoundRect(rectLoop, ViewUtils.dip2px(context, 8), ViewUtils.dip2px(context, 8), mTouchLoopPaint);
 
-            RectF rectCircle = new RectF(point.x - textP.x / 2 - ViewUtils.dip2px(context, 5),
-                    point.y - textP.y / 2 - ViewUtils.dip2px(context, 2),
-                    point.x + textP.x / 2 + ViewUtils.dip2px(context, 5),
-                    point.y + textP.y / 2 + ViewUtils.dip2px(context, 3));
-            canvas.drawRoundRect(rectCircle, ViewUtils.dip2px(context, 7), ViewUtils.dip2px(context, 7), mTouchCirclePaint);
+            RectF rectCircle = new RectF(point.x - textP.x / 2 - ViewUtils.dip2px(context, 6.5f),
+                    point.y - textP.y / 2 - ViewUtils.dip2px(context, 1.5f),
+                    point.x + textP.x / 2 + ViewUtils.dip2px(context, 6.5f),
+                    point.y + textP.y / 2 + ViewUtils.dip2px(context, 1.5f));
+            canvas.drawRoundRect(rectCircle, ViewUtils.dip2px(context, 6.5f), ViewUtils.dip2px(context, 6.5f), mTouchCirclePaint);
 
             PointF text = getTextWidthAndHeight(xValues[mTouchPos], mTouchTextPaint);
             canvas.drawText(xValues[mTouchPos], point.x - text.x / 2, point.y + text.y / 2, mTouchTextPaint);
@@ -341,8 +374,11 @@ public class LineChartView extends View {
             PointF point = mDataPoint.get(mTouchPos);
             PointF textWidthAndHeight = getTextWidthAndHeight(String.valueOf(datas[mTouchPos]), mPopTextPaint);
             Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.sore_plate);
-            canvas.drawBitmap(bitmap, point.x - bitmap.getWidth() / 2, point.y - bitmap.getHeight() * 3 / 2, mPopPaint);
-            canvas.drawText(String.valueOf(datas[mTouchPos]), point.x - textWidthAndHeight.x / 2, point.y - textWidthAndHeight.y * 2, mPopTextPaint);
+            float left = point.x - bitmap.getWidth() / 2;
+            float top = point.y - bitmap.getHeight() * 3 / 2;
+            canvas.drawBitmap(bitmap, left, top, mPopPaint);
+            canvas.drawText(String.valueOf(datas[mTouchPos]), point.x - textWidthAndHeight.x / 2,
+                    top + textWidthAndHeight.y + ViewUtils.dip2px(context, 2), mPopTextPaint);
         }
     }
 
@@ -370,7 +406,7 @@ public class LineChartView extends View {
                     RectF xRect = new RectF(xPoint.x - mRadius * 3, xPoint.y - mRadius * 3, xPoint.x + mRadius * 3, xPoint.y + mRadius * 3);
                     if (rectCircle.contains(ex, ey) || xRect.contains(ex, ey)) {
 //                    pop.setText(String.valueOf(datas[i]));
-//                    pop.showAsDropDown(LineChartView.this, (int) rect.left, (int) (-height + rect.bottom - buttomMargin * 4));
+//                    pop.showAsDropDown(LineChartView.this, (int) rect.left, (int) (-height + rect.bottom - mBottomMargin * 4));
                         isTouch = true;
                         mTouchPos = i;
                         invalidate();

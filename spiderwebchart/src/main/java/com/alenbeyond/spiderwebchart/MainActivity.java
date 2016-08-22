@@ -4,7 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
-import com.alenbeyond.spiderwebchart.view.SpiderWebChart;
+import com.alenbeyond.spiderwebchart.view.CustomSpiderWebChart;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,14 +12,14 @@ import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
-    private SpiderWebChart spiderWebChart;
+    private CustomSpiderWebChart customSpiderWebChart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        spiderWebChart = (SpiderWebChart) findViewById(R.id.spider_web_chart);
-        spiderWebChart.setOnClickListener(new View.OnClickListener() {
+        customSpiderWebChart = (CustomSpiderWebChart) findViewById(R.id.spider_web_chart);
+        customSpiderWebChart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 changeData();
@@ -35,6 +35,6 @@ public class MainActivity extends AppCompatActivity {
             float value = rand.nextFloat();
             values.add(value);
         }
-        spiderWebChart.setDatas(values);
+        customSpiderWebChart.setDatas(values);
     }
 }

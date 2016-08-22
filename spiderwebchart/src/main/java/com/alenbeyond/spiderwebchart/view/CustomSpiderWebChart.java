@@ -17,7 +17,7 @@ import com.alenbeyond.spiderwebchart.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SpiderWebChart extends View {
+public class CustomSpiderWebChart extends View {
 
     private static final int DEFAULT_NUM_DATA = 5;
 
@@ -92,73 +92,63 @@ public class SpiderWebChart extends View {
         setMeasuredDimension(widthMeasureSpec, widthMeasureSpec);
     }
 
-    public SpiderWebChart(Context context, AttributeSet attrs) {
+    public CustomSpiderWebChart(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.SpiderWebChart);
-        mNumData = array.getInteger(R.styleable.SpiderWebChart_numData, DEFAULT_NUM_DATA);
-        mNumScale = array.getInteger(R.styleable.SpiderWebChart_numScale, DEFAULT_NUM_SCALE);
-        mLineStrokeWidth = array.getFloat(R.styleable.SpiderWebChart_lineStrokeWidth, DEFAULT_LINE_STROKE_WIDTH);
-        mScaleLength = array.getFloat(R.styleable.SpiderWebChart_scaleLength, DEFAULT_SCALE_LENGTH);
-        mChartColor = array.getColor(R.styleable.SpiderWebChart_chartColor, DEFAULT_CHART_COLOR);
-        mIsAnimated = array.getBoolean(R.styleable.SpiderWebChart_isAnimated, DEFAULT_IS_ANIMATED);
-        mDuration = array.getInteger(R.styleable.SpiderWebChart_duration, DEFAULT_DURATION);
-        mCenterText = array.getString(R.styleable.SpiderWebChart_centerText);
-        mCenterTextSize = array.getDimension(R.styleable.SpiderWebChart_centerTextSize, DEFAULT_CENTER_TEXT_SIZE);
+        TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.CustomSpiderWebChart);
+        mNumData = array.getInteger(R.styleable.CustomSpiderWebChart_numData, DEFAULT_NUM_DATA);
+        mNumScale = array.getInteger(R.styleable.CustomSpiderWebChart_numScale, DEFAULT_NUM_SCALE);
+        mLineStrokeWidth = array.getFloat(R.styleable.CustomSpiderWebChart_lineStrokeWidth, DEFAULT_LINE_STROKE_WIDTH);
+        mScaleLength = array.getFloat(R.styleable.CustomSpiderWebChart_scaleLength, DEFAULT_SCALE_LENGTH);
+        mChartColor = array.getColor(R.styleable.CustomSpiderWebChart_chartColor, DEFAULT_CHART_COLOR);
+        mIsAnimated = array.getBoolean(R.styleable.CustomSpiderWebChart_isAnimated, DEFAULT_IS_ANIMATED);
+        mDuration = array.getInteger(R.styleable.CustomSpiderWebChart_duration, DEFAULT_DURATION);
+        mCenterText = array.getString(R.styleable.CustomSpiderWebChart_centerText);
+        mCenterTextSize = array.getDimension(R.styleable.CustomSpiderWebChart_centerTextSize, DEFAULT_CENTER_TEXT_SIZE);
 
-        mTextColor = array.getColor(R.styleable.SpiderWebChart_textColor, DEFAULT_TEXT_COLOR);
-        mTextSize = array.getDimension(R.styleable.SpiderWebChart_textSize, DEFAULT_TEXT_SIZE);
-        mLineColor = array.getColor(R.styleable.SpiderWebChart_lineColor, DEFAULT_LINE_COLOR);
+        mTextColor = array.getColor(R.styleable.CustomSpiderWebChart_textColor, DEFAULT_TEXT_COLOR);
+        mTextSize = array.getDimension(R.styleable.CustomSpiderWebChart_textSize, DEFAULT_TEXT_SIZE);
+        mLineColor = array.getColor(R.styleable.CustomSpiderWebChart_lineColor, DEFAULT_LINE_COLOR);
 
         mDatas = new ArrayList<>();
         for (int i = 0; i < mNumData; i++) {
             mDatas.add(0.0f);
         }
 
-        initPaint();
+        init();
 
     }
 
-    private void initPaint() {
+    private void init() {
 
         //网格
-        if (mFramePaint == null) {
-            mFramePaint = new Paint();
-            mFramePaint.setColor(mLineColor);
-            mFramePaint.setAntiAlias(true);
-            mFramePaint.setStrokeWidth(mLineStrokeWidth);
-        }
+        mFramePaint = new Paint();
+        mFramePaint.setColor(mLineColor);
+        mFramePaint.setAntiAlias(true);
+        mFramePaint.setStrokeWidth(mLineStrokeWidth);
 
         //遮罩
-        if (mChartPaint == null) {
-            mChartPaint = new Paint();
-            mChartPaint.setColor(mChartColor);
-            mChartPaint.setStyle(Paint.Style.FILL);
-            mChartPaint.setAntiAlias(true);
-        }
+        mChartPaint = new Paint();
+        mChartPaint.setColor(mChartColor);
+        mChartPaint.setStyle(Paint.Style.FILL);
+        mChartPaint.setAntiAlias(true);
 
         //周围文字
-        if (mTextPaint == null) {
-            mTextPaint = new Paint();
-            mTextPaint.setColor(mTextColor);
-            mTextPaint.setTextSize(mTextSize);
-            mTextPaint.setAntiAlias(true);
-        }
+        mTextPaint = new Paint();
+        mTextPaint.setColor(mTextColor);
+        mTextPaint.setTextSize(mTextSize);
+        mTextPaint.setAntiAlias(true);
 
         //中央文字
-        if (mCenterTextPaint == null) {
-            mCenterTextPaint = new Paint();
-            mCenterTextPaint.setColor(mTextColor);
-            mCenterTextPaint.setTextSize(mCenterTextSize);
-            mCenterTextPaint.setTypeface(Typeface.DEFAULT_BOLD);
-            mCenterTextPaint.setTextAlign(Paint.Align.CENTER);//文字剧中
-            mCenterTextPaint.setAntiAlias(true);
-        }
+        mCenterTextPaint = new Paint();
+        mCenterTextPaint.setColor(mTextColor);
+        mCenterTextPaint.setTextSize(mCenterTextSize);
+        mCenterTextPaint.setTypeface(Typeface.DEFAULT_BOLD);
+        mCenterTextPaint.setTextAlign(Paint.Align.CENTER);//文字剧中
+        mCenterTextPaint.setAntiAlias(true);
 
-        if (mBitmapPaint == null) {
-            mBitmapPaint = new Paint();
-            mBitmapPaint.setAntiAlias(true);
-        }
+        mBitmapPaint = new Paint();
+        mBitmapPaint.setAntiAlias(true);
     }
 
     @Override

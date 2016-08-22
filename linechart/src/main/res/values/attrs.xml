@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="LineChartView">
+
+        <attr name="lcvYSpacing" format="dimension" />
+        <attr name="lcvRadius" format="dimension" />
+        <attr name="lcvLeftMargin" format="dimension" />
+        <attr name="lcvRightMargin" format="dimension" />
+        <attr name="lcvBottomMargin" format="dimension" />
+        <attr name="lcvYAxisTextSize" format="dimension" />
+        <attr name="lcvXAxisTextSize" format="dimension" />
+        <attr name="lcvXAxisTextColor" format="color" />
+        <attr name="lcvYAxisTextColor" format="color" />
+        <attr name="lcvDashedLineColor" format="color" />
+        <attr name="lcvCircleColor" format="color" />
+        <attr name="lcvLoopColor" format="color" />
+        <attr name="lcvLineColor" format="color" />
+
+    </declare-styleable>
+
+</resources>

@@ -9,7 +9,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.alenbeyond.dashboardview.MainActivity">
 
-    <com.alenbeyond.dashboardview.view.DashboardView
+    <com.alenbeyond.dashboardview.view.CustomDashboardView
         android:id="@+id/dash"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
