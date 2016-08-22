@@ -6,6 +6,8 @@ import android.view.View;
 
 import com.alenbeyond.linechart.view.LineChartView;
 
+import java.util.Random;
+
 public class MainActivity extends AppCompatActivity {
 
     private LineChartView lcv;
@@ -18,8 +20,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void click(View view) {
-        lcv.setxValues(new String[]{"4月", "5月", "6月", "7月", "8月", "9月"})
-                .setDatas(new int[]{600, 800, 400, 850, 900, 750})
-                .invalidate();
+        Random random = new Random();
+        lcv.setDatas(new int[]{350 + random.nextInt(600),
+                350 + random.nextInt(600),
+                350 + random.nextInt(600),
+                350 + random.nextInt(600),
+                350 + random.nextInt(600),
+                350 + random.nextInt(600)}).invalidate();
     }
 }
