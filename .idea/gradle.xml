@@ -3,14 +3,16 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
-        <option name="distributionType" value="DEFAULT_WRAPPED" />
+        <option name="distributionType" value="LOCAL" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="gradleHome" value="C:\Android\AS2.1\android-studio\gradle\gradle-2.10" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/dashboardview" />
             <option value="$PROJECT_DIR$/linechart" />
             <option value="$PROJECT_DIR$/nestedscrollingdemo" />
+            <option value="$PROJECT_DIR$/recyclerbaseadapter" />
             <option value="$PROJECT_DIR$/spiderwebchart" />
           </set>
         </option>
@@ -20,6 +22,7 @@
             <option value="$PROJECT_DIR$/dashboardview" />
             <option value="$PROJECT_DIR$/linechart" />
             <option value="$PROJECT_DIR$/nestedscrollingdemo" />
+            <option value="$PROJECT_DIR$/recyclerbaseadapter" />
             <option value="$PROJECT_DIR$/spiderwebchart" />
           </set>
         </option>
