@@ -284,12 +284,12 @@ public class CustomSpiderWebChart extends View {
         }
     };
 
-    public void setmCenterText(String mCenterText) {
+    public void setCenterText(String mCenterText) {
         this.mCenterText = mCenterText;
         invalidate();
     }
 
-    public void setmCenterTextSize(float mCenterTextSize) {
+    public void setCenterTextSize(float mCenterTextSize) {
         this.mCenterTextSize = mCenterTextSize;
         invalidate();
     }

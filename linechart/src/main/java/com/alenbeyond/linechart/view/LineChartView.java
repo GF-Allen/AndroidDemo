@@ -1,5 +1,6 @@
 package com.alenbeyond.linechart.view;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -14,6 +15,9 @@ import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -24,6 +28,7 @@ import android.widget.TextView;
 import com.alenbeyond.linechart.R;
 import com.alenbeyond.linechart.ViewUtils;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 /**
@@ -34,9 +39,7 @@ public class LineChartView extends View {
     private final String TAG = "LineChartView";
     private Context context;
     private Paint mXAxisTextPaint;// X坐标
-
     private Paint mYAxisTextPaint;// Y坐标
-
     private Paint mDashedLinePaint;//中间的虚线
 
     private Paint mLinePaint;//折线
@@ -67,6 +70,10 @@ public class LineChartView extends View {
 
     private static final int DEFAULT_DASHED_LINE_COLOR = 0xFFE7EAEF; // 需要颜色
 
+    private static final int DEFAULT_ANIM_DURATION = 300; //动画时长
+
+    private static final boolean DEFAULT_IS_ANIMATED = true; //是否执行动画
+
     private static final float DEFAULT_Y_AXIS_TEXT_SIZE = 45;
 
     private static final float DEFAULT_X_AXIS_TEXT_SIZE = 30;
@@ -88,16 +95,17 @@ public class LineChartView extends View {
     private float mYAxisTextSize = DEFAULT_Y_AXIS_TEXT_SIZE;
     private float mXAxisTextSize = DEFAULT_X_AXIS_TEXT_SIZE;
 
+    private int mDuration = DEFAULT_ANIM_DURATION;
+
     private int width;
 
     private int height;
-
     private float mLeftMargin = ViewUtils.dip2px(getContext(), 15);
     private float mRightMargin = ViewUtils.dip2px(getContext(), 15);
+
     private float mBottomMargin = ViewUtils.dip2px(getContext(), 15);
 
     private String[] xValues = {"3月", "4月", "5月", "6月", "7月", "8月"}; // x轴参数
-
     private int[] yValues = {350, 650, 950}; //y轴参数
     private int[] datas = {400, 950, 600, 900, 600, 800};
     private float xSpacing;
@@ -106,6 +114,9 @@ public class LineChartView extends View {
     private boolean isTouch;
     private int mTouchPos; // 点击的位置
     private LineChartPop pop;
+
+    private ValueAnimator mAnimator; //动画
+    private boolean mIsAnimated; //是否开启动画
 
     public LineChartView setDatas(int[] datas) {
         this.datas = datas;
@@ -119,6 +130,21 @@ public class LineChartView extends View {
 
     public LineChartView setyValues(int[] yValues) {
         this.yValues = yValues;
+        return this;
+    }
+
+    public LineChartView refresh() {
+        if (mIsAnimated) {
+            startAnim();
+        } else {
+            invalidate();
+        }
+        return this;
+    }
+
+    private LineChartView startAnim() {
+        finishPos = 0;
+        mAnimator.start();
         return this;
     }
 
@@ -141,6 +167,10 @@ public class LineChartView extends View {
         mCircleColor = array.getColor(R.styleable.LineChartView_lcvCircleColor, DEFAULT_CIRCLE_COLOR);
         mLoopColor = array.getColor(R.styleable.LineChartView_lcvLoopColor, DEFAULT_LOOP_COLOR);
         mLineColor = array.getColor(R.styleable.LineChartView_lcvLineColor, DEFAULT_LINE_COLOR);
+
+        mDuration = array.getInteger(R.styleable.LineChartView_lcvDuration, DEFAULT_ANIM_DURATION);
+
+        mIsAnimated = array.getBoolean(R.styleable.LineChartView_lcvIsAnimated, DEFAULT_IS_ANIMATED);
 
         init();
     }
@@ -219,6 +249,22 @@ public class LineChartView extends View {
         mPopTextPaint.setTextSize(ViewUtils.dip2px(context, 10));
         mPopTextPaint.setColor(Color.WHITE);
 
+        if (mIsAnimated) {
+            mAnimator = ValueAnimator.ofFloat(0.0f, 1.0f);
+            mAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                    if (finishPos == datas.length) {
+                        mAnimator.cancel();
+                        finishPos = 0;
+                    } else {
+                        invalidate();
+                    }
+                }
+            });
+            mAnimator.setDuration(mDuration / datas.length);
+            mAnimator.start();
+        }
     }
 
     @Override
@@ -250,12 +296,17 @@ public class LineChartView extends View {
         isTouch = false;
     }
 
-    ArrayList<PointF> mXPoint = new ArrayList<>();
+    private ArrayList<PointF> mXPoint = new ArrayList<>();
 
-    ArrayList<PointF> mYPoint = new ArrayList<>();
+    private ArrayList<PointF> mYPoint = new ArrayList<>();
 
-    ArrayList<PointF> mDataPoint = new ArrayList<>();
+    private ArrayList<PointF> mDataPoint = new ArrayList<>();
 
+    /**
+     * Y轴文字
+     *
+     * @param canvas
+     */
     private void drawYAxisText(Canvas canvas) {
         PointF textX = getTextWidthAndHeight(xValues[0], mXAxisTextPaint);
         if (yValues != null) {
@@ -270,6 +321,11 @@ public class LineChartView extends View {
         }
     }
 
+    /**
+     * X轴文字
+     *
+     * @param canvas
+     */
     private void drawXAxisText(Canvas canvas) {
         if (xValues != null) {
             //获取Y轴字体的宽度
@@ -291,6 +347,11 @@ public class LineChartView extends View {
         }
     }
 
+    /**
+     * 中间线条
+     *
+     * @param canvas
+     */
     private void drawDashedLine(Canvas canvas) {
         PointF pointY = getTextWidthAndHeight(String.valueOf(yValues[0]), mYAxisTextPaint);
         float startX = mYPoint.get(0).x + pointY.x / 2 + 10;
@@ -301,6 +362,7 @@ public class LineChartView extends View {
             path.moveTo(startX, y);
             path.lineTo(endX, y);
             if (i != 0) {
+                //绘制虚线
                 PathEffect effects = new DashPathEffect(new float[]{5, 5, 5, 5}, 1);
                 mDashedLinePaint.setPathEffect(effects);
                 canvas.drawPath(path, mDashedLinePaint);
@@ -310,6 +372,11 @@ public class LineChartView extends View {
         }
     }
 
+    /**
+     * 画圆圈的环
+     *
+     * @param canvas
+     */
     private void drawLoop(Canvas canvas) {
         float minY = mYPoint.get(0).y; // 最小值的y
         float maxY = mYPoint.get(yValues.length - 1).y; // 最大值的y
@@ -328,6 +395,13 @@ public class LineChartView extends View {
         }
     }
 
+    private int finishPos = 0;
+
+    /**
+     * 折线
+     *
+     * @param canvas
+     */
     private void drawLine(Canvas canvas) {
         PointF start = null;
         PointF end;
@@ -337,17 +411,43 @@ public class LineChartView extends View {
                 continue;
             }
             end = mDataPoint.get(i);
-            canvas.drawLine(start.x, start.y, end.x, end.y, mLinePaint);
+            if (mIsAnimated) {
+                if (i < finishPos) {
+                    canvas.drawLine(start.x, start.y, end.x, end.y, mLinePaint);
+                }
+                if (i == finishPos) {
+                    canvas.drawLine(start.x, start.y,
+                            start.x + (end.x - start.x) * (float) mAnimator.getAnimatedValue(),
+                            start.y + (end.y - start.y) * (float) mAnimator.getAnimatedValue(),
+                            mLinePaint);
+                }
+                if ((float) mAnimator.getAnimatedValue() == 1.0f && finishPos != datas.length - 1) {
+                    mAnimator.start();
+                    finishPos++;
+                }
+            } else {
+                canvas.drawLine(start.x, start.y, end.x, end.y, mLinePaint);
+            }
             start = end;
         }
     }
 
+    /**
+     * 圆圈的实心
+     *
+     * @param canvas
+     */
     private void drawCircle(Canvas canvas) {
         for (PointF point : mDataPoint) {
             canvas.drawCircle(point.x, point.y, mRadius - ViewUtils.dip2px(getContext(), 1), mCirclePaint);
         }
     }
 
+    /**
+     * 触摸时X轴文字
+     *
+     * @param canvas
+     */
     private void drawTouch(Canvas canvas) {
         if (isTouch) {
             PointF point = mXPoint.get(mTouchPos);
@@ -369,6 +469,11 @@ public class LineChartView extends View {
         }
     }
 
+    /**
+     * 触摸时弹出
+     *
+     * @param canvas
+     */
     private void drawPop(Canvas canvas) {
         if (isTouch) {
             PointF point = mDataPoint.get(mTouchPos);
@@ -382,8 +487,15 @@ public class LineChartView extends View {
         }
     }
 
-    Rect rect = new Rect(); //临时保存
+    private Rect rect = new Rect(); //临时保存
 
+    /**
+     * 获取String的宽高
+     *
+     * @param text
+     * @param paint
+     * @return
+     */
     private PointF getTextWidthAndHeight(String text, Paint paint) {
         paint.getTextBounds(text, 0, text.length(), rect);
         float width = rect.width();

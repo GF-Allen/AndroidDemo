@@ -16,6 +16,8 @@
         <attr name="lcvCircleColor" format="color" />
         <attr name="lcvLoopColor" format="color" />
         <attr name="lcvLineColor" format="color" />
+        <attr name="lcvDuration" format="integer" />
+        <attr name="lcvIsAnimated" format="boolean" />
 
     </declare-styleable>
 

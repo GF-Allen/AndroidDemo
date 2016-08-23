@@ -21,11 +21,13 @@ public class MainActivity extends AppCompatActivity {
 
     public void click(View view) {
         Random random = new Random();
-        lcv.setDatas(new int[]{350 + random.nextInt(600),
+        lcv.setDatas(new int[]{
                 350 + random.nextInt(600),
                 350 + random.nextInt(600),
                 350 + random.nextInt(600),
                 350 + random.nextInt(600),
-                350 + random.nextInt(600)}).invalidate();
+                350 + random.nextInt(600),
+                350 + random.nextInt(600)})
+                .refresh();
     }
 }
