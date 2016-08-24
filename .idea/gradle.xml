@@ -13,6 +13,7 @@
             <option value="$PROJECT_DIR$/nestedscrollingdemo" />
             <option value="$PROJECT_DIR$/recyclerbaseadapter" />
             <option value="$PROJECT_DIR$/spiderwebchart" />
+            <option value="$PROJECT_DIR$/systemmanager" />
           </set>
         </option>
         <option name="myModules">
@@ -23,6 +24,7 @@
             <option value="$PROJECT_DIR$/nestedscrollingdemo" />
             <option value="$PROJECT_DIR$/recyclerbaseadapter" />
             <option value="$PROJECT_DIR$/spiderwebchart" />
+            <option value="$PROJECT_DIR$/systemmanager" />
           </set>
         </option>
       </GradleProjectSettings>
