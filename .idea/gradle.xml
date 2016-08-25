@@ -14,6 +14,7 @@
             <option value="$PROJECT_DIR$/recyclerbaseadapter" />
             <option value="$PROJECT_DIR$/spiderwebchart" />
             <option value="$PROJECT_DIR$/systemmanager" />
+            <option value="$PROJECT_DIR$/videowelcome" />
           </set>
         </option>
         <option name="myModules">
@@ -25,6 +26,7 @@
             <option value="$PROJECT_DIR$/recyclerbaseadapter" />
             <option value="$PROJECT_DIR$/spiderwebchart" />
             <option value="$PROJECT_DIR$/systemmanager" />
+            <option value="$PROJECT_DIR$/videowelcome" />
           </set>
         </option>
       </GradleProjectSettings>

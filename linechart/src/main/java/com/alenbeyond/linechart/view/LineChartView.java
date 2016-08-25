@@ -383,6 +383,7 @@ public class LineChartView extends View {
         float min = yValues[0];
         float max = yValues[yValues.length - 1];
 
+        //没有一根画个毛
         if (datas != null) {
             for (int i = 0; i < datas.length; i++) {
                 float x = mXPoint.get(i).x;
