@@ -1,20 +1,30 @@
 package com.alenbeyond.systemmanager;
 
-import android.content.ComponentName;
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alenbeyond.systemmanager.utils.BaseManager;
+import com.alenbeyond.systemmanager.utils.SystemManager;
 import com.alenbeyond.systemmanager.utils.SystemManagerUtils;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements BaseManager.OnExceptionListener {
+
+    private TextView tvSystem;
+    private SystemManager manager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        tvSystem = (TextView) findViewById(R.id.tv_system);
+        tvSystem.setText("手机品牌" + Build.MANUFACTURER);
+        manager = SystemManager.getInstance();
+        manager.setOnExceptionListener(this);
     }
 
     /**
@@ -23,8 +33,7 @@ public class MainActivity extends AppCompatActivity {
      * @param view
      */
     public void autoStart(View view) {
-        SystemManagerUtils.openHuaweiAutoStart(this);
-        SystemManagerUtils.openMiuiAutoStart(this);
+        manager.openAutoStart(this);
     }
 
     /**
@@ -33,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
      * @param view
      */
     public void location(View view) {
-        SystemManagerUtils.openSettingLocation(this);
+        manager.openSettingLocation(this);
     }
 
     /**
@@ -42,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
      * @param view
      */
     public void performanceMode(View view) {
-        SystemManagerUtils.openHueweiPowerMode(this);
+        manager.openPowerMode(this);
     }
 
     /**
@@ -51,8 +60,7 @@ public class MainActivity extends AppCompatActivity {
      * @param view
      */
     public void authority(View view) {
-        SystemManagerUtils.openHuaweiPermissionManager(this);
-        SystemManagerUtils.openMiuiPermission(this);
+        manager.openPermission(this);
     }
 
     /**
@@ -61,11 +69,15 @@ public class MainActivity extends AppCompatActivity {
      * @param view
      */
     public void Protect(View view) {
-        SystemManagerUtils.openHuaweiProtect(this);
-        SystemManagerUtils.openMiuiPowerHide(this);
+        manager.openProtect(this);
     }
 
     public void viewMonitor(View view) {
-        SystemManagerUtils.openHuaweiViewMonitor(this);
+        manager.openViewMonitor(this);
+    }
+
+    @Override
+    public void onException(String systemType) {
+        Toast.makeText(MainActivity.this, systemType + "异常", Toast.LENGTH_SHORT).show();
     }
 }

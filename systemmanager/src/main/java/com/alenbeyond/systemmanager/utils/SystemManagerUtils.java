@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.provider.Settings;
+import android.widget.Toast;
 
 /**
  * 不同系统的权限设置
@@ -176,6 +177,7 @@ public class SystemManagerUtils {
             context.startActivity(intent);
         } catch (Exception e) {
             e.printStackTrace();
+            Toast.makeText(context, "异常异常", Toast.LENGTH_SHORT).show();
         }
     }
 
