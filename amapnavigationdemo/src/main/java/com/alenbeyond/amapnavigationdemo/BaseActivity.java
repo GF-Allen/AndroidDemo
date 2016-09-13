@@ -30,8 +30,8 @@ public class BaseActivity extends Activity implements AMapNaviListener, AMapNavi
 
     protected AMapNaviView mAMapNaviView;
     protected AMapNavi mAMapNavi;
-    protected NaviLatLng mEndLatlng = new NaviLatLng(39.925846, 116.432765);
-    protected NaviLatLng mStartLatlng = new NaviLatLng(39.925041, 116.437901);
+    protected NaviLatLng mEndLatlng = new NaviLatLng(121.484628,31.238101);
+    protected NaviLatLng mStartLatlng = new NaviLatLng(121.618787,31.201687);
     protected final List<NaviLatLng> sList = new ArrayList<NaviLatLng>();
     protected final List<NaviLatLng> eList = new ArrayList<NaviLatLng>();
     protected List<NaviLatLng> mWayPointList;

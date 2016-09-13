@@ -9,12 +9,13 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     //定位包、导航包需要的额外权限（注：基础权限也需要）
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
-    <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:allowBackup="true"
@@ -25,13 +26,16 @@
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="327eb448a196132e48d5131f69dfd9cd" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".RestRouteShowActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".RouteNaviActivity"/>
+
+        <service android:name="com.amap.api.location.APSService"/>
     </application>
 
 </manifest>

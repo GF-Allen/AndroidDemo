@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="110dp"
+        android:layout_weight="1"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="45dip"
+            android:background="@color/darkyellow"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/gpsnavi"
+                android:layout_width="wrap_content"
+                android:layout_height="40dip"
+                android:checked="false"
+                android:text="开始导航"
+                android:textSize="14dp" >
+            </Button>
+
+            <Button
+                android:id="@+id/emulatornavi"
+                android:layout_width="wrap_content"
+                android:layout_height="40dip"
+                android:text="模拟导航"
+                android:textSize="14dp" >
+            </Button>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/et_end"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+
+        <Button
+            android:id="@+id/btn_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="搜索"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1" >
+
+        <com.amap.api.maps.MapView
+            android:id="@+id/navi_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+</LinearLayout>
