@@ -3,11 +3,13 @@ package com.alenbeyond.systemmanager.utils;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 
 /**
  * Created by Alen on 2016/9/7.
  */
-public abstract class BaseManager implements ISystemAction {
+public class BaseManager implements ISystemAction {
 
     // ================================安卓通用设置==========================================
 
@@ -27,6 +29,41 @@ public abstract class BaseManager implements ISystemAction {
     @Override
     public void openSettingLocation(Context context) {
         openSettingForComp(context, PKG_ANDROID_SETTING, TARGET_ANDROID_LOCATION);
+    }
+
+    @Override
+    public void openPermission(Context context) {
+        Intent localIntent = new Intent();
+        localIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        if (Build.VERSION.SDK_INT >= 9) {
+            localIntent.setAction("android.settings.APPLICATION_DETAILS_SETTINGS");
+            localIntent.setData(Uri.fromParts("package", context.getPackageName(), null));
+        } else if (Build.VERSION.SDK_INT <= 8) {
+            localIntent.setAction(Intent.ACTION_VIEW);
+            localIntent.setClassName("com.android.settings","com.android.settings.InstalledAppDetails");
+            localIntent.putExtra("com.android.settings.ApplicationPkgName", context.getPackageName());
+        }
+        context.startActivity(localIntent);
+    }
+
+    @Override
+    public void openAutoStart(Context context) {
+
+    }
+
+    @Override
+    public void openPowerMode(Context context) {
+
+    }
+
+    @Override
+    public void openProtect(Context context) {
+
+    }
+
+    @Override
+    public void openViewMonitor(Context context) {
+
     }
 
     public void openSettingForComp(Context context, String packageName, String target) {

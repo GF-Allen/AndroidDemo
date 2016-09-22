@@ -3,16 +3,12 @@ package com.alenbeyond.systemmanager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.alenbeyond.systemmanager.utils.BaseManager;
 import com.alenbeyond.systemmanager.utils.SystemManager;
-import com.alenbeyond.systemmanager.utils.SystemManagerUtils;
 
-public class MainActivity extends AppCompatActivity implements BaseManager.OnExceptionListener {
+public class MainActivity extends AppCompatActivity {
 
     private TextView tvSystem;
     private SystemManager manager;
@@ -24,7 +20,6 @@ public class MainActivity extends AppCompatActivity implements BaseManager.OnExc
         tvSystem = (TextView) findViewById(R.id.tv_system);
         tvSystem.setText("手机品牌" + Build.MANUFACTURER);
         manager = SystemManager.getInstance();
-        manager.setOnExceptionListener(this);
     }
 
     /**
@@ -74,10 +69,5 @@ public class MainActivity extends AppCompatActivity implements BaseManager.OnExc
 
     public void viewMonitor(View view) {
         manager.openViewMonitor(this);
-    }
-
-    @Override
-    public void onException(String systemType) {
-        Toast.makeText(MainActivity.this, systemType + "异常", Toast.LENGTH_SHORT).show();
     }
 }

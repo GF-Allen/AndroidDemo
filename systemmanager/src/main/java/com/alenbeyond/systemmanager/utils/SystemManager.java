@@ -10,6 +10,7 @@ public class SystemManager implements ISystemAction, BaseManager.OnExceptionList
 
     private static final String HW = "HUAWEI";
     private static final String XM = "xiaomi";
+    private static final String MZ = "Meizu";
 
     private static SystemManager mSystemManager;
 
@@ -22,6 +23,10 @@ public class SystemManager implements ISystemAction, BaseManager.OnExceptionList
             mManager = new HWSystemManager(HW);
         } else if (Build.MANUFACTURER.equalsIgnoreCase(XM)) {
             mManager = new XMSystemManager(XM);
+        }else if (Build.MANUFACTURER.equalsIgnoreCase(MZ)){
+            mManager = new MZSystemManager(MZ);
+        } else {
+            mManager = new BaseManager(Build.MANUFACTURER);
         }
         mManager.setOnExceptionListener(this);
     }
