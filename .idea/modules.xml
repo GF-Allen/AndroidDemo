@@ -8,6 +8,7 @@
       <module fileurl="file://$PROJECT_DIR$/linechart/linechart.iml" filepath="$PROJECT_DIR$/linechart/linechart.iml" />
       <module fileurl="file://$PROJECT_DIR$/nestedscrollingdemo/nestedscrollingdemo.iml" filepath="$PROJECT_DIR$/nestedscrollingdemo/nestedscrollingdemo.iml" />
       <module fileurl="file://$PROJECT_DIR$/recyclerbaseadapter/recyclerbaseadapter.iml" filepath="$PROJECT_DIR$/recyclerbaseadapter/recyclerbaseadapter.iml" />
+      <module fileurl="file://$PROJECT_DIR$/roundprogressbar/roundprogressbar.iml" filepath="$PROJECT_DIR$/roundprogressbar/roundprogressbar.iml" />
       <module fileurl="file://$PROJECT_DIR$/spiderwebchart/spiderwebchart.iml" filepath="$PROJECT_DIR$/spiderwebchart/spiderwebchart.iml" />
       <module fileurl="file://$PROJECT_DIR$/systemmanager/systemmanager.iml" filepath="$PROJECT_DIR$/systemmanager/systemmanager.iml" />
       <module fileurl="file://$PROJECT_DIR$/videowelcome/videowelcome.iml" filepath="$PROJECT_DIR$/videowelcome/videowelcome.iml" />

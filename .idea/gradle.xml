@@ -13,24 +13,13 @@
             <option value="$PROJECT_DIR$/linechart" />
             <option value="$PROJECT_DIR$/nestedscrollingdemo" />
             <option value="$PROJECT_DIR$/recyclerbaseadapter" />
+            <option value="$PROJECT_DIR$/roundprogressbar" />
             <option value="$PROJECT_DIR$/spiderwebchart" />
             <option value="$PROJECT_DIR$/systemmanager" />
             <option value="$PROJECT_DIR$/videowelcome" />
           </set>
         </option>
-        <option name="myModules">
-          <set>
-            <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/amapnavigationdemo" />
-            <option value="$PROJECT_DIR$/dashboardview" />
-            <option value="$PROJECT_DIR$/linechart" />
-            <option value="$PROJECT_DIR$/nestedscrollingdemo" />
-            <option value="$PROJECT_DIR$/recyclerbaseadapter" />
-            <option value="$PROJECT_DIR$/spiderwebchart" />
-            <option value="$PROJECT_DIR$/systemmanager" />
-            <option value="$PROJECT_DIR$/videowelcome" />
-          </set>
-        </option>
+        <option name="resolveModulePerSourceSet" value="false" />
       </GradleProjectSettings>
     </option>
   </component>
