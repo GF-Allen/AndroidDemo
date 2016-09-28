@@ -16,9 +16,6 @@ import com.example.priceanimtead.R;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Number View with animation to display a number
- */
 public class PriceAnimtedView extends View {
     private String mNumberString = "";
 
@@ -26,12 +23,12 @@ public class PriceAnimtedView extends View {
 
     private float mTextWidth;
     private float mTextHeight;
-    private float mTextSize = 0;    // textSize
-    private float mCharWidth;       // character space
-    private float mExtraSpace;      // character space
+    private float mTextSize = 0;
+    private float mCharWidth;
+    private float mExtraSpace;
 
     private int ANIM_TIME = 1000;
-    private int mNumberColor = Color.BLACK; // textColor
+    private int mNumberColor = Color.BLACK;
 
     private List<ValueAnimator> animatorList = new ArrayList<>();
     private List<Integer> startNumber = new ArrayList<>();
@@ -89,10 +86,12 @@ public class PriceAnimtedView extends View {
             int num = Integer.parseInt("" + mNumberString.charAt(i));
             startNumber.add(i, calcNum(num, 5));
         }
+        int heightSize = (int) mTextSize;
+        int widthSize = (int) mTextWidth + 5;
+        setMeasuredDimension(widthSize, heightSize); // 重新设置控件大小
     }
 
     private int calcNum(int num, int i) {
-        // num 0 ~ 9
         int result = 0;
         if (num + i > 9) {
             result = num + i - 10;
@@ -106,36 +105,25 @@ public class PriceAnimtedView extends View {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int widthSize = MeasureSpec.getSize(widthMeasureSpec);
         int heightSize = MeasureSpec.getSize(heightMeasureSpec);
         int heightMode = MeasureSpec.getMode(heightMeasureSpec);
         if (heightMode == MeasureSpec.UNSPECIFIED || heightMode == MeasureSpec.AT_MOST) {
             heightSize = (int) mTextSize;
         }
+        int widthSize = (int) mTextWidth + 5;
         setMeasuredDimension(widthSize, heightSize);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
-        // super.onDraw(canvas);
-        // allocations per draw cycle.
         int paddingLeft = getPaddingLeft();
-        int paddingTop = getPaddingTop();
         int paddingRight = getPaddingRight();
-        int paddingBottom = getPaddingBottom();
 
         int contentWidth = getWidth() - paddingLeft - paddingRight;
-        int contentHeight = getHeight() - paddingTop - paddingBottom;
 
-        Log.e(".......", "paddingTop = " + paddingTop
-                + ",paddingBottom = " + paddingBottom
-                + ",contentHeight = " + contentHeight
-                + ",mTextSize = " + mTextSize
-                + ",mTextHeight = " + mTextHeight
-                + ",getHeight() = " + getHeight());
         float startX = paddingLeft + (contentWidth - mTextWidth) / 2;
         startX -= mExtraSpace * (startNumber.size() - 1) / 2;
-        float startY = paddingTop + (contentHeight + mTextHeight) / 2;
+        float startY;
 
         for (int i = 0; i < startNumber.size(); i++) {
             float progress = 1;
@@ -181,59 +169,8 @@ public class PriceAnimtedView extends View {
         invalidate();
     }
 
-    /**
-     * return the number
-     *
-     * @return the number
-     */
-    public int getNumber() {
-        return Integer.parseInt(mNumberString);
-    }
-
-    /**
-     * set the number to show
-     * @param number the number to show
-     */
-    public void setNumberText(int number) {
-        mNumberString = String.valueOf(number).trim();
-        invalidateTextPaintAndMeasurements();
-    }
-
-    /**
-     * number color
-     *
-     * @return number color
-     */
-    public int getTextColor() {
-        return mNumberColor;
-    }
-
-    /**
-     * Sets the number color
-     *
-     * @param numberColor the number color
-     */
-    public void setTextColor(int numberColor) {
-        mNumberColor = numberColor;
-        invalidateTextPaintAndMeasurements();
-    }
-
-    /**
-     * Gets the number size
-     *
-     * @return the number size
-     */
-    public float getTextSize() {
-        return mTextSize;
-    }
-
-    /**
-     * Sets the  the number size.
-     *
-     * @param exampleDimension the number size to use.
-     */
-    public void setTextSize(float exampleDimension) {
-        mTextSize = exampleDimension;
+    public void setNumberText(String number) {
+        mNumberString = number;
         invalidateTextPaintAndMeasurements();
     }
 
