@@ -9,9 +9,11 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/amapnavigationdemo" />
+            <option value="$PROJECT_DIR$/customdialog" />
             <option value="$PROJECT_DIR$/dashboardview" />
             <option value="$PROJECT_DIR$/linechart" />
             <option value="$PROJECT_DIR$/nestedscrollingdemo" />
+            <option value="$PROJECT_DIR$/priceanimtead" />
             <option value="$PROJECT_DIR$/recyclerbaseadapter" />
             <option value="$PROJECT_DIR$/roundprogressbar" />
             <option value="$PROJECT_DIR$/spiderwebchart" />

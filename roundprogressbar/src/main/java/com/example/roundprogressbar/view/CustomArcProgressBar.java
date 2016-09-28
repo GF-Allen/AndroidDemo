@@ -1,5 +1,6 @@
 package com.example.roundprogressbar.view;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -7,6 +8,7 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.animation.AnticipateOvershootInterpolator;
 
 import com.example.roundprogressbar.R;
 
@@ -21,10 +23,13 @@ public class CustomArcProgressBar extends View {
 
     private static final int CIRCLE_STROKE_WIDTH = 56; // 指示圆环的宽度
 
+    private long mDuration = 1000; //动画时间
+
     protected int mDividerWidth = 32;
-    protected int mCircleBackground, mCircleGray, mCircleGreen;
+    protected int mCircleGray, mCircleGreen;
 
     private int mWidth = 0, mHeight = 0;
+    private ValueAnimator mAnimator;
 
     public CustomArcProgressBar(Context context) {
         this(context, null);
@@ -36,13 +41,23 @@ public class CustomArcProgressBar extends View {
 
     public CustomArcProgressBar(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        mCircleBackground = getResources().getColor(R.color.circle_background);
         mCircleGray = getResources().getColor(R.color.circle_gray);
         mCircleGreen = getResources().getColor(R.color.circle_green);
 
         TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.CustomArcProgressBar);
         mDividerWidth = (int) typedArray.getDimension(R.styleable.CustomArcProgressBar_circle_out_indicator_size, mDividerWidth);
         typedArray.recycle();
+
+        mAnimator = ValueAnimator.ofFloat(0.0f, 1.0f);
+        mAnimator.setInterpolator(new AnticipateOvershootInterpolator(0.5f));
+        mAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                invalidate();
+            }
+        });
+        mAnimator.setDuration(mDuration);
+        mAnimator.start();
     }
 
     @Override
@@ -80,7 +95,7 @@ public class CustomArcProgressBar extends View {
 
         if (mEndIndicator > mStartIndicator && mProgress >= mStartIndicator) {
             circlePaint.setColor(mCircleGreen);
-            float angle = CIRCLE_SWEEP_ANGLE * (mProgress - mStartIndicator) / (mEndIndicator - mStartIndicator);
+            float angle = CIRCLE_SWEEP_ANGLE * (mProgress * (float)mAnimator.getAnimatedValue()- mStartIndicator) / (mEndIndicator - mStartIndicator);
             canvas.drawArc(oval, CIRCLE_START_ANGLE, angle, false, circlePaint);
         }
     }
