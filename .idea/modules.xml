@@ -6,8 +6,10 @@
       <module fileurl="file://$PROJECT_DIR$/amapnavigationdemo/amapnavigationdemo.iml" filepath="$PROJECT_DIR$/amapnavigationdemo/amapnavigationdemo.iml" />
       <module fileurl="file://$PROJECT_DIR$/customdialog/customdialog.iml" filepath="$PROJECT_DIR$/customdialog/customdialog.iml" />
       <module fileurl="file://$PROJECT_DIR$/dashboardview/dashboardview.iml" filepath="$PROJECT_DIR$/dashboardview/dashboardview.iml" />
+      <module fileurl="file://$PROJECT_DIR$/flowlayout/flowlayout.iml" filepath="$PROJECT_DIR$/flowlayout/flowlayout.iml" />
       <module fileurl="file://$PROJECT_DIR$/linechart/linechart.iml" filepath="$PROJECT_DIR$/linechart/linechart.iml" />
       <module fileurl="file://$PROJECT_DIR$/nestedscrollingdemo/nestedscrollingdemo.iml" filepath="$PROJECT_DIR$/nestedscrollingdemo/nestedscrollingdemo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/offlinemap/offlinemap.iml" filepath="$PROJECT_DIR$/offlinemap/offlinemap.iml" />
       <module fileurl="file://$PROJECT_DIR$/priceanimtead/priceanimtead.iml" filepath="$PROJECT_DIR$/priceanimtead/priceanimtead.iml" />
       <module fileurl="file://$PROJECT_DIR$/recyclerbaseadapter/recyclerbaseadapter.iml" filepath="$PROJECT_DIR$/recyclerbaseadapter/recyclerbaseadapter.iml" />
       <module fileurl="file://$PROJECT_DIR$/roundprogressbar/roundprogressbar.iml" filepath="$PROJECT_DIR$/roundprogressbar/roundprogressbar.iml" />

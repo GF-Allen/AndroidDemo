@@ -1,0 +1,43 @@
+<resources>
+    <string name="app_name">OfflineMap</string>
+    <!-- offlinemap -->
+    <string name="beijing">"北京"</string>
+    <string name="start">"开始"</string>
+    <string name="pause">"暂停"</string>
+    <string name="stop">"停止"</string>
+    <string name="remove">"删除"</string>
+    <string name="update">"更新"</string>
+    <string name="logo_position">logo位置</string>
+    <string name="bottom_left">左下</string>
+    <string name="bottom_center">底部居中</string>
+    <string name="bottom_right">右下</string>
+    <string name="center_right">右中</string>
+    <string name="map_screenshot">地图截屏</string>
+    <string name="error_network">搜索失败,请检查网络连接！</string>
+    <string name="error_key">key验证无效！</string>
+    <string name="error_other">未知错误，请稍后重试!错误码为</string>
+    <string name="no_result">对不起，没有搜索到相关数据！</string>
+    <string name="province">省</string>
+    <string name="city">市</string>
+    <string name="district">区/县</string>
+    <string name="all_offline">所有城市</string>
+    <string name="download_offline">下载管理</string>
+    <string name="city_name">城市名称</string>
+    <string name="city_size">城市大小</string>
+    <string name="download_progress">0%</string>
+    <string name="my_city">当前城市</string>
+    <string name="sso_complete">完成</string>
+    <string name="share_demo">短串分享</string>
+    <string name="share_description">短串分享功能演示</string>
+    <string name="weather_demo">天气查询</string>
+    <string name="weather_description">天气预报功能</string>
+    <string name="subpoi_demo">POI父子关系</string>
+    <string name="subpoi_description">介绍POI的父子关系功能</string>
+    <string name="weather_live">实时</string>
+    <string name="weather_forecast">预报</string>
+    <string name="report_time">发布时间</string>
+    <string name="location_share">位置分享</string>
+    <string name="route_share">路径规划分享</string>
+    <string name="poi_share">POI分享</string>
+    <string name="navi_share">导航分享</string>
+</resources>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="com.alenbeyond.flowlayout.MainActivity">
+
+    <com.alenbeyond.flowlayout.view.FlowLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+
+        <View
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="@color/colorAccent"
+            android:layout_marginRight="1dp"/>
+
+        <View
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="#ff00ee" />
+
+        <View
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="@color/colorAccent" />
+
+        <View
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:background="#eeddde" />
+
+        <View
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:background="#eeff00" />
+
+        <View
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:background="#ff00ff" />
+
+        <View
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:background="#00ffff" />
+
+
+    </com.alenbeyond.flowlayout.view.FlowLayout>
+
+</RelativeLayout>
