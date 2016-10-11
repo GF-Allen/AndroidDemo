@@ -27,6 +27,7 @@ public class OfflineListAdapter extends BaseExpandableListAdapter implements OnG
 //	private HashMap<Object, List<OfflineMapCity>> cityMap = null;
 	private OfflineMapManager amapManager;
 	private Context mContext;
+	private boolean isShen;
 	
 	
 	public OfflineListAdapter(List<OfflineMapProvince> provinceList,
@@ -40,10 +41,10 @@ public class OfflineListAdapter extends BaseExpandableListAdapter implements OnG
 		isOpen = new boolean[provinceList.size()];
 	}
 	
-	public OfflineListAdapter(List<OfflineMapProvince> provinceList,
+	public OfflineListAdapter(boolean isShen,List<OfflineMapProvince> provinceList,
 			OfflineMapManager amapManager, Context mContext) {
 		this.provinceList = provinceList;
-//		this.cityMap = cityMap;
+		this.isShen = isShen;
 		this.amapManager = amapManager;
 		this.mContext = mContext;
 		
@@ -118,22 +119,25 @@ public class OfflineListAdapter extends BaseExpandableListAdapter implements OnG
 	public View getGroupView(int groupPosition, boolean isExpanded,
 							 View convertView, ViewGroup parent) {
 		TextView group_text;
-		ImageView group_image;
 		if (convertView == null) {
-			convertView = (RelativeLayout) RelativeLayout.inflate(
-					mContext, R.layout.offlinemap_group, null);
+			if (isShen) {
+				convertView = RelativeLayout.inflate(mContext, R.layout.offlinemap_group_shen, null);
+			} else {
+				convertView = RelativeLayout.inflate(mContext, R.layout.offlinemap_group, null);
+			}
 		}
 		group_text = (TextView) convertView.findViewById(R.id.group_text);
-		group_image = (ImageView) convertView
-				.findViewById(R.id.group_image);
 		group_text.setText(provinceList.get(groupPosition)
 				.getProvinceName());
-		if (isOpen[groupPosition]) {
-			group_image.setImageDrawable(mContext.getResources().getDrawable(
-					R.drawable.downarrow));
-		} else {
-			group_image.setImageDrawable(mContext.getResources().getDrawable(
-					R.drawable.rightarrow));
+		if (isShen) {
+			ImageView ivGroupArrow = (ImageView) convertView.findViewById(R.id.iv_group_arrow);
+			ivGroupArrow.setPivotX(ivGroupArrow.getWidth()/2);
+			ivGroupArrow.setPivotY(ivGroupArrow.getHeight()/2);//支点在图片中心
+			if (isOpen[groupPosition]) {
+				ivGroupArrow.setRotation(90);
+			} else {
+				ivGroupArrow.setRotation(0);
+			}
 		}
 		return convertView;
 	}
@@ -150,13 +154,11 @@ public class OfflineListAdapter extends BaseExpandableListAdapter implements OnG
 			viewHolder = (ViewHolder) convertView.getTag();
 		} else {
 			viewHolder = new ViewHolder();
-			OfflineChild offLineChild = new OfflineChild(mContext, amapManager);
+			OfflineChild offLineChild = new OfflineChild(mContext, amapManager,isShen);
 			convertView = offLineChild.getOffLineChildView();
 			viewHolder.mOfflineChild = offLineChild;
 			convertView.setTag(viewHolder);
 		}
-//		OfflineMapCity mapCity = cityMap.get(groupPosition).get(
-//				childPosition);
 		OfflineMapCity mapCity = null;
 		
 		viewHolder.mOfflineChild.setProvince(false);

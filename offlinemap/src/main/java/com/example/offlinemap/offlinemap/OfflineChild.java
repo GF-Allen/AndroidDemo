@@ -14,6 +14,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,288 +24,330 @@ import com.amap.api.maps.offlinemap.OfflineMapCity;
 import com.amap.api.maps.offlinemap.OfflineMapManager;
 import com.amap.api.maps.offlinemap.OfflineMapStatus;
 import com.example.offlinemap.R;
+import com.example.offlinemap.ViewUtils;
 
-public class OfflineChild implements OnClickListener, OnLongClickListener {
-	private Context mContext;
+public class OfflineChild implements OnClickListener {
+    private Context mContext;
 
-	private TextView mOffLineCityName;// 离线包名称
+    private TextView mOffLineCityName;// 离线包名称
 
-	private TextView mOffLineCitySize;// 离线包大小
+    private TextView mOffLineCitySize;// 离线包大小
 
-	private ImageView mDownloadImage;// 下载相关Image
+    private ImageView mDownloadImage;// 下载相关Image
 
-	private TextView mDownloadProgress;
+    private TextView mDownloadProgress;
 
-	private OfflineMapManager amapManager;
+    private OfflineMapManager amapManager;
 
-	private OfflineMapCity mMapCity;// 离线下载城市
+    private OfflineMapCity mMapCity;// 离线下载城市
 
-	Dialog dialog;// 长按弹出的对话框
+    Dialog dialog;// 长按弹出的对话框
 
-	private boolean mIsDownloading = false;
+    private boolean mIsDownloading = false;
 
-	private boolean isProvince = false;
+    private boolean isProvince = false;
 
-	private Handler handler = new Handler() {
+    private boolean isShen;//省份
 
-		@Override
-		public void handleMessage(Message msg) {
-			// TODO Auto-generated method stub
-			super.handleMessage(msg);
-			int completeCode = (Integer) msg.obj;
-			switch (msg.what) {
-			case OfflineMapStatus.LOADING:
-				
-				
-				displyaLoadingStatus(completeCode);
-				
-				
-				break;
-			case OfflineMapStatus.PAUSE:
-				displayPauseStatus(completeCode);
-				break;
-			case OfflineMapStatus.STOP:
-				break;
-			case OfflineMapStatus.SUCCESS:
-				displaySuccessStatus();
-				break;
-			case OfflineMapStatus.UNZIP:
-				displayUnZIPStatus(completeCode);
-				break;
-			case OfflineMapStatus.ERROR:
-				displayExceptionStatus();
-				break;
-			case OfflineMapStatus.WAITING:
-				displayWaitingStatus(completeCode);
-				break;
-			case OfflineMapStatus.CHECKUPDATES:
-				displayDefault();
-				break;
-				
-			case OfflineMapStatus.EXCEPTION_AMAP:
-			case OfflineMapStatus.EXCEPTION_NETWORK_LOADING:
-			case OfflineMapStatus.EXCEPTION_SDCARD:
-				displayExceptionStatus();
-				break;
-				
-			case OfflineMapStatus.NEW_VERSION:
-				displayHasNewVersion();
-				break;
+    private Handler handler = new Handler() {
 
-			}
-		}
+        @Override
+        public void handleMessage(Message msg) {
+            // TODO Auto-generated method stub
+            super.handleMessage(msg);
+            int completeCode = (Integer) msg.obj;
+            switch (msg.what) {
+                case OfflineMapStatus.LOADING:
 
-	};
 
-	public boolean isProvince() {
-		return isProvince;
-	}
+                    displyaLoadingStatus(completeCode);
 
-	public void setProvince(boolean isProvince) {
-		this.isProvince = isProvince;
-	}
 
-	public OfflineChild(Context context, OfflineMapManager offlineMapManager) {
-		mContext = context;
-		initView();
-		amapManager = offlineMapManager;
-		// mOfflineMapManager = new OfflineMapManager(mContext, this);
-	}
+                    break;
+                case OfflineMapStatus.PAUSE:
+                    displayPauseStatus(completeCode);
+                    break;
+                case OfflineMapStatus.STOP:
+                    break;
+                case OfflineMapStatus.SUCCESS:
+                    displaySuccessStatus();
+                    break;
+                case OfflineMapStatus.UNZIP:
+                    displayUnZIPStatus(completeCode);
+                    break;
+                case OfflineMapStatus.ERROR:
+                    displayExceptionStatus();
+                    break;
+                case OfflineMapStatus.WAITING:
+                    displayWaitingStatus(completeCode);
+                    break;
+                case OfflineMapStatus.CHECKUPDATES:
+                    displayDefault();
+                    break;
 
-	public String getCityName() {
-		if (mMapCity != null) {
-			return mMapCity.getCity();
-		}
-		return null;
-	}
+                case OfflineMapStatus.EXCEPTION_AMAP:
+                case OfflineMapStatus.EXCEPTION_NETWORK_LOADING:
+                case OfflineMapStatus.EXCEPTION_SDCARD:
+                    displayExceptionStatus();
+                    break;
 
-	public View getOffLineChildView() {
-		return mOffLineChildView;
-	}
+                case OfflineMapStatus.NEW_VERSION:
+                    displayHasNewVersion();
+                    break;
 
-	private View mOffLineChildView;
+            }
+        }
 
-	private void initView() {
-		LayoutInflater inflater = (LayoutInflater) mContext
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		mOffLineChildView = inflater.inflate(R.layout.offlinemap_child, null);
-		mOffLineCityName = (TextView) mOffLineChildView.findViewById(R.id.name);
-		mOffLineCitySize = (TextView) mOffLineChildView
-				.findViewById(R.id.name_size);
-		mDownloadImage = (ImageView) mOffLineChildView
-				.findViewById(R.id.download_status_image);
-		mDownloadProgress = (TextView) mOffLineChildView
-				.findViewById(R.id.download_progress_status);
+    };
+    private TextView mTvStatus;
+    private ImageView mIvDeleteIcon;
+    private ImageView mIvPauseDelete;
 
-		mOffLineChildView.setOnClickListener(this);
-		mOffLineChildView.setOnLongClickListener(this);
+    public boolean isProvince() {
+        return isProvince;
+    }
 
-	}
+    public void setProvince(boolean isProvince) {
+        this.isProvince = isProvince;
+    }
 
-	public void setOffLineCity(OfflineMapCity mapCity) {
-		if (mapCity != null) {
-			mMapCity = mapCity;
-			mOffLineCityName.setText(mapCity.getCity());
-			double size = ((int) (mapCity.getSize() / 1024.0 / 1024.0 * 100)) / 100.0;
-			mOffLineCitySize.setText(String.valueOf(size) + " M");
+    public OfflineChild(Context context, OfflineMapManager offlineMapManager, boolean isShen) {
+        mContext = context;
+        this.isShen = isShen;
+        initView();
+        amapManager = offlineMapManager;
+        // mOfflineMapManager = new OfflineMapManager(mContext, this);
+    }
 
-			notifyViewDisplay(mMapCity.getState(), mMapCity.getcompleteCode(),
-					mIsDownloading);
-		}
-	}
+    public String getCityName() {
+        if (mMapCity != null) {
+            return mMapCity.getCity();
+        }
+        return null;
+    }
 
-	/**
-	 * 更新显示状态 在被点击和下载进度发生改变时会被调用
-	 * 
-	 * @param status
-	 * @param completeCode
-	 * @param isDownloading
-	 */
-	private void notifyViewDisplay(int status, int completeCode,
-			boolean isDownloading) {
-		if (mMapCity != null) {
-			mMapCity.setState(status);
-			mMapCity.setCompleteCode(completeCode);
-		}
-		Message msg = new Message();
-		msg.what = status;
-		msg.obj = completeCode;
-		handler.sendMessage(msg);
+    public View getOffLineChildView() {
+        return mOffLineChildView;
+    }
 
-	}
+    private View mOffLineChildView;
 
-	/**
-	 * 最原始的状态，未下载，显示下载按钮
-	 */
-	private void displayDefault() {
-		mDownloadProgress.setVisibility(View.INVISIBLE);
-		mDownloadImage.setVisibility(View.VISIBLE);
-		mDownloadImage.setImageResource(R.drawable.offlinearrow_download);
-	}
-	
-	/**
-	 * 显示有更新
-	 */
-	private void displayHasNewVersion() {
-		mDownloadProgress.setVisibility(View.VISIBLE);
-		mDownloadImage.setVisibility(View.VISIBLE);
-		mDownloadImage.setImageResource(R.drawable.offlinearrow_download);
-		mDownloadProgress.setText("已下载-有更新");
-	}
+    private void initView() {
+        LayoutInflater inflater = (LayoutInflater) mContext
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mOffLineChildView = inflater.inflate(R.layout.offlinemap_child, null);
+        mOffLineCityName = (TextView) mOffLineChildView.findViewById(R.id.name);
+        LinearLayout llContent = (LinearLayout) mOffLineChildView.findViewById(R.id.ll_content);
+        mOffLineCitySize = (TextView) mOffLineChildView
+                .findViewById(R.id.name_size);
+        if (isShen) {
+            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) llContent.getLayoutParams();
+            params.leftMargin = ViewUtils.dip2px(mContext, 28);
+            llContent.setLayoutParams(params);
+        }
+        mDownloadImage = (ImageView) mOffLineChildView
+                .findViewById(R.id.download_status_image);
+        mDownloadProgress = (TextView) mOffLineChildView
+                .findViewById(R.id.download_progress_status);
 
-	/**
-	 * 等待中
-	 * 
-	 * @param completeCode
-	 */
-	private void displayWaitingStatus(int completeCode) {
-		mDownloadProgress.setVisibility(View.VISIBLE);
-		mDownloadImage.setVisibility(View.VISIBLE);
-		mDownloadImage.setImageResource(R.drawable.offlinearrow_start);
-		mDownloadProgress.setTextColor(Color.GREEN);
-		mDownloadProgress.setText("等待中");
-	}
-	
-	/**
-	 * 下载出现异常
-	 * 
-	 * @param completeCode
-	 */
-	private void displayExceptionStatus() {
-		mDownloadProgress.setVisibility(View.VISIBLE);
-		mDownloadImage.setVisibility(View.VISIBLE);
-		mDownloadImage.setImageResource(R.drawable.offlinearrow_start);
-		mDownloadProgress.setTextColor(Color.RED);
-		mDownloadProgress.setText("下载出现异常");
-	}
+        mTvStatus = (TextView) mOffLineChildView.findViewById(R.id.tv_status);
+        mIvPauseDelete = (ImageView) mOffLineChildView.findViewById(R.id.iv_pause_delete);
 
-	/**
-	 * 暂停
-	 * 
-	 * @param completeCode
-	 */
-	private void displayPauseStatus(int completeCode) {
-		if (mMapCity != null) {
-			completeCode = mMapCity.getcompleteCode();
-		}
+        mIvDeleteIcon = (ImageView) mOffLineChildView.findViewById(R.id.iv_delete_icon);
+        mIvDeleteIcon.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mMapCity != null) {
+                    String city = mMapCity.getCity();
+                    amapManager.remove(city);
+                }
+            }
+        });
+        mIvPauseDelete.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mMapCity != null) {
+                    String city = mMapCity.getCity();
+                    amapManager.remove(city);
+                }
+            }
+        });
 
-		mDownloadProgress.setVisibility(View.VISIBLE);
-		mDownloadImage.setVisibility(View.VISIBLE);
-		mDownloadImage.setImageResource(R.drawable.offlinearrow_start);
-		mDownloadProgress.setTextColor(Color.RED);
-		mDownloadProgress.setText("暂停中:" + completeCode + "%");
+        mOffLineChildView.setOnClickListener(this);
+    }
 
-	}
+    public void setOffLineCity(OfflineMapCity mapCity) {
+        if (mapCity != null) {
+            mMapCity = mapCity;
+            mOffLineCityName.setText(mapCity.getCity());
+            double size = ((int) (mapCity.getSize() / 1024.0 / 1024.0 * 100)) / 100.0;
+            mOffLineCitySize.setText(String.valueOf(size) + " M");
 
-	/**
-	 * 下载成功
-	 */
-	private void displaySuccessStatus() {
-		mDownloadProgress.setVisibility(View.VISIBLE);
-		mDownloadImage.setVisibility(View.GONE);
-		mDownloadProgress.setText("安装成功");
+            notifyViewDisplay(mMapCity.getState(), mMapCity.getcompleteCode(),
+                    mIsDownloading);
+        }
+    }
 
-		mDownloadProgress.setTextColor(mContext.getResources().getColor(
-				R.color.gary));
-	}
+    /**
+     * 更新显示状态 在被点击和下载进度发生改变时会被调用
+     *
+     * @param status
+     * @param completeCode
+     * @param isDownloading
+     */
+    private void notifyViewDisplay(int status, int completeCode,
+                                   boolean isDownloading) {
+        if (mMapCity != null) {
+            mMapCity.setState(status);
+            mMapCity.setCompleteCode(completeCode);
+        }
+        Message msg = new Message();
+        msg.what = status;
+        msg.obj = completeCode;
+        handler.sendMessage(msg);
 
-	/**
-	 * 正在解压
-	 */
-	private void displayUnZIPStatus(int completeCode) {
-		mDownloadProgress.setVisibility(View.VISIBLE);
-		mDownloadImage.setVisibility(View.GONE);
-		mDownloadProgress.setText("正在解压: " + completeCode + "%");
-		mDownloadProgress.setTextColor(mContext.getResources().getColor(
-				R.color.gary));
-	}
+    }
 
-	/**
-	 * 
-	 * @param completeCode
-	 */
-	private void displyaLoadingStatus(int completeCode) {
-		// todo
-		if (mMapCity == null) {
-			return;
-		}
+    /**
+     * 最原始的状态，未下载，显示下载按钮
+     */
+    private void displayDefault() {
+        mTvStatus.setVisibility(View.GONE);
+        mIvDeleteIcon.setVisibility(View.GONE);
+        mDownloadProgress.setVisibility(View.INVISIBLE);
+        mDownloadImage.setVisibility(View.VISIBLE);
+        mDownloadImage.setImageResource(R.mipmap.offline_download_icon);
+        mIvPauseDelete.setVisibility(View.GONE);
+    }
 
-		mDownloadProgress.setVisibility(View.VISIBLE);
-		mDownloadProgress.setText(mMapCity.getcompleteCode() + "%");
-		mDownloadImage.setVisibility(View.VISIBLE);
-		mDownloadImage.setImageResource(R.drawable.offlinearrow_stop);
-		mDownloadProgress.setTextColor(Color.BLUE);
-	}
+    /**
+     * 显示有更新
+     */
+    private void displayHasNewVersion() {
+//		mDownloadProgress.setVisibility(View.VISIBLE);
+        mDownloadImage.setVisibility(View.VISIBLE);
+        mDownloadImage.setImageResource(R.mipmap.offline_download_icon);
+//		mDownloadProgress.setText("已下载-有更新");
+        mTvStatus.setText("(有更新)");
+        mTvStatus.setVisibility(View.VISIBLE);
+    }
 
-	private synchronized void pauseDownload() {
-		amapManager.pause();
+    /**
+     * 等待中
+     *
+     * @param completeCode
+     */
+    private void displayWaitingStatus(int completeCode) {
+        mDownloadProgress.setVisibility(View.VISIBLE);
+        mDownloadImage.setVisibility(View.VISIBLE);
+        mDownloadImage.setImageResource(R.mipmap.offline_down_pause);
+        mDownloadProgress.setTextColor(Color.GRAY);
+        mDownloadProgress.setText("等待中");
+    }
+
+    /**
+     * 下载出现异常
+     */
+    private void displayExceptionStatus() {
+        mDownloadProgress.setVisibility(View.VISIBLE);
+        mDownloadImage.setVisibility(View.VISIBLE);
+        mDownloadImage.setImageResource(R.mipmap.offline_down_pause);
+        mDownloadProgress.setTextColor(Color.RED);
+        mDownloadProgress.setText("下载出现异常");
+    }
+
+    /**
+     * 暂停
+     *
+     * @param completeCode
+     */
+    private void displayPauseStatus(int completeCode) {
+        if (mMapCity != null) {
+            completeCode = mMapCity.getcompleteCode();
+        }
+
+        mDownloadProgress.setVisibility(View.VISIBLE);
+        mDownloadImage.setVisibility(View.VISIBLE);
+        mDownloadImage.setImageResource(R.mipmap.offline_down_pause);
+        mDownloadProgress.setTextColor(Color.RED);
+        mDownloadProgress.setText("暂停中:" + completeCode + "%");
+        mIvPauseDelete.setVisibility(View.VISIBLE);
+
+    }
+
+    /**
+     * 下载成功
+     */
+    private void displaySuccessStatus() {
+//		mDownloadProgress.setVisibility(View.VISIBLE);
+        mDownloadImage.setVisibility(View.GONE);
+//		mDownloadProgress.setText("安装成功");
+
+//		mDownloadProgress.setTextColor(mContext.getResources().getColor(
+//				R.color.gary));
+        mTvStatus.setText("(已安装)");
+        mTvStatus.setVisibility(View.VISIBLE);
+        mIvDeleteIcon.setVisibility(View.VISIBLE);
+        mDownloadProgress.setVisibility(View.GONE);
+    }
+
+    /**
+     * 正在解压
+     */
+    private void displayUnZIPStatus(int completeCode) {
+        mDownloadProgress.setVisibility(View.VISIBLE);
+        mDownloadImage.setVisibility(View.GONE);
+        mDownloadProgress.setText("正在解压: " + completeCode + "%");
+        mDownloadProgress.setTextColor(mContext.getResources().getColor(
+                R.color.gary));
+    }
+
+    /**
+     * @param completeCode
+     */
+    private void displyaLoadingStatus(int completeCode) {
+        // todo
+        if (mMapCity == null) {
+            return;
+        }
+
+        mDownloadProgress.setVisibility(View.VISIBLE);
+        mDownloadProgress.setText(mMapCity.getcompleteCode() + "%");
+        mDownloadImage.setVisibility(View.VISIBLE);
+        mDownloadImage.setImageResource(R.mipmap.offline_downing);
+        mDownloadProgress.setTextColor(Color.BLUE);
+        mIvPauseDelete.setVisibility(View.GONE);
+    }
+
+    private synchronized void pauseDownload() {
+        amapManager.pause();
 //		amapManager.pauseByName(getCityName());
-		//暂停下载之后，开始下一个等待中的任务
-		amapManager.restart();
-	}
+        //暂停下载之后，开始下一个等待中的任务
+        amapManager.restart();
+    }
 
-	/**
-	 * 启动下载任务
-	 */
-	private synchronized boolean startDownload() {
-		try {
-			if (isProvince) {
-				amapManager.downloadByProvinceName(mMapCity.getCity());
-			} else {
-				amapManager.downloadByCityName(mMapCity.getCity());
-			}
-			return true;
-		} catch (AMapException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			
-			Toast.makeText(mContext, e.getErrorMessage(), Toast.LENGTH_SHORT).show();
-			return false;
-		}
-	}
+    /**
+     * 启动下载任务
+     */
+    private synchronized boolean startDownload() {
+        try {
+            if (isProvince) {
+                amapManager.downloadByProvinceName(mMapCity.getCity());
+            } else {
+                amapManager.downloadByCityName(mMapCity.getCity());
+            }
+            return true;
+        } catch (AMapException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
 
-	public void onClick(View view) {
-		
+            Toast.makeText(mContext, e.getErrorMessage(), Toast.LENGTH_SHORT).show();
+            return false;
+        }
+    }
+
+    public void onClick(View view) {
+
 //		if(mMapCity.getCity() .equals( "北京")) {
 //			new Thread(new Runnable() {
 //				
@@ -329,7 +373,7 @@ public class OfflineChild implements OnClickListener, OnLongClickListener {
 //			}).start();
 //			return;
 //		}
-		
+
 //		// 避免频繁点击事件，避免不断从夫开始下载和暂停下载
 //		mOffLineChildView.setEnabled(false);
 //		new Handler().postDelayed(new Runnable() {
@@ -340,135 +384,44 @@ public class OfflineChild implements OnClickListener, OnLongClickListener {
 //			}
 //		},100);// 这个时间段刚刚好
 
-		int completeCode = -1, status = -1;
-		if (mMapCity != null) {
-			status = mMapCity.getState();
-			completeCode = mMapCity.getcompleteCode();
+        int completeCode = -1, status = -1;
+        if (mMapCity != null) {
+            status = mMapCity.getState();
+            completeCode = mMapCity.getcompleteCode();
 
-			switch (status) {
-			case OfflineMapStatus.UNZIP:
-			case OfflineMapStatus.SUCCESS:
-				// 解压中何在成功啥不干
-				break;
-			case OfflineMapStatus.LOADING:
+            switch (status) {
+                case OfflineMapStatus.UNZIP:
+                case OfflineMapStatus.SUCCESS:
+                    // 解压中何在成功啥不干
+                    break;
+                case OfflineMapStatus.LOADING:
 //			case OfflineMapStatus.WAITING:
-				pauseDownload();
-				// 在下载中的时候点击，表示要暂停
-				displayPauseStatus(completeCode);
-				break;
-			case OfflineMapStatus.PAUSE:
-			case OfflineMapStatus.CHECKUPDATES:
-			case OfflineMapStatus.ERROR:
-			case OfflineMapStatus.WAITING:
+                    pauseDownload();
+                    // 在下载中的时候点击，表示要暂停
+                    displayPauseStatus(completeCode);
+                    break;
+                case OfflineMapStatus.PAUSE:
+                case OfflineMapStatus.CHECKUPDATES:
+                case OfflineMapStatus.ERROR:
+                case OfflineMapStatus.WAITING:
 //			case OfflineMapStatus.NEW_VERSION:
-			default:
-				if(startDownload())
-					displayWaitingStatus(completeCode);
-				else 
-					displayExceptionStatus();
+                default:
+                    if (startDownload())
+                        displayWaitingStatus(completeCode);
+                    else
+                        displayExceptionStatus();
 //					Toast.makeText(mContext, "SD卡空间不多了", 1000).show();
-				// 在暂停中点击，表示要开始下载
-				// 在默认状态点击，表示开始下载
-				// 在等待中点击，表示要开始下载
-				// 要开始下载状态改为等待中，再回调中会自己修改
-				break;
-			}
-			
-			Log.e("zxy-child", mMapCity.getCity() + " " + mMapCity.getState());
+                    // 在暂停中点击，表示要开始下载
+                    // 在默认状态点击，表示开始下载
+                    // 在等待中点击，表示要开始下载
+                    // 要开始下载状态改为等待中，再回调中会自己修改
+                    break;
+            }
 
-		}
+            Log.e("zxy-child", mMapCity.getCity() + " " + mMapCity.getState());
 
-	}
+        }
 
-	/**
-	 * 长按弹出提示框 删除（取消）下载
-	 * 加入synchronized 避免在dialog还没有关闭的时候再次，请求弹出的bug
-	 */
-	public synchronized void showDeleteDialog(final String name) {
-		AlertDialog.Builder builder = new Builder(mContext);
-
-		builder.setTitle(name);
-		builder.setSingleChoiceItems(new String[] { "删除" }, -1,
-				new DialogInterface.OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface arg0, int arg1) {
-						dialog.dismiss();
-						if (amapManager == null) {
-							return;
-						}
-						switch (arg1) {
-						case 0:
-							amapManager.remove(name);
-							break;
-
-						default:
-							break;
-						}
-
-						// amapManager.log();
-
-					}
-				});
-		builder.setNegativeButton("取消", null);
-		dialog = builder.create();
-		dialog.show();
-	}
-
-	/**
-	 * 长按弹出提示框 删除和更新
-	 */
-	public void showDeleteUpdateDialog(final String name) {
-		AlertDialog.Builder builder = new Builder(mContext);
-
-		builder.setTitle(name);
-		builder.setSingleChoiceItems(new String[] { "删除", "检查更新" }, -1,
-				new DialogInterface.OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface arg0, int arg1) {
-						dialog.dismiss();
-						if (amapManager == null) {
-							return;
-						}
-						switch (arg1) {
-						case 0:
-							amapManager.remove(name);
-							break;
-						case 1:
-							try {
-								amapManager.updateOfflineCityByName(name);
-							} catch (AMapException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-							break;
-						default:
-							break;
-						}
-
-					}
-				});
-		builder.setNegativeButton("取消", null);
-		dialog = builder.create();
-		dialog.show();
-	}
-
-	public boolean onLongClick(View arg0) {
-		
-//		if (mMapCity.getState() == OfflineMapStatus.LOADING) {
-//			amapManager.restart();
-//			return false;
-//		} 
-		
-		Log.d("amap-longclick",
-				mMapCity.getCity() + " : " + mMapCity.getState());
-		if (mMapCity.getState() == OfflineMapStatus.SUCCESS) {
-			showDeleteUpdateDialog(mMapCity.getCity());
-		} else if (mMapCity.getState() != OfflineMapStatus.CHECKUPDATES) {
-			showDeleteDialog(mMapCity.getCity());
-		} 
-		return false;
-	}
+    }
 
 }
