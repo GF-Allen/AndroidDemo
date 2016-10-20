@@ -6,6 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/amapnavigationdemo/amapnavigationdemo.iml" filepath="$PROJECT_DIR$/amapnavigationdemo/amapnavigationdemo.iml" />
       <module fileurl="file://$PROJECT_DIR$/customdialog/customdialog.iml" filepath="$PROJECT_DIR$/customdialog/customdialog.iml" />
       <module fileurl="file://$PROJECT_DIR$/dashboardview/dashboardview.iml" filepath="$PROJECT_DIR$/dashboardview/dashboardview.iml" />
+      <module fileurl="file://$PROJECT_DIR$/deviceiddemo/deviceiddemo.iml" filepath="$PROJECT_DIR$/deviceiddemo/deviceiddemo.iml" />
       <module fileurl="file://$PROJECT_DIR$/edittextsinglescrolldemo/edittextsinglescrolldemo.iml" filepath="$PROJECT_DIR$/edittextsinglescrolldemo/edittextsinglescrolldemo.iml" />
       <module fileurl="file://$PROJECT_DIR$/flowlayout/flowlayout.iml" filepath="$PROJECT_DIR$/flowlayout/flowlayout.iml" />
       <module fileurl="file://$PROJECT_DIR$/linechart/linechart.iml" filepath="$PROJECT_DIR$/linechart/linechart.iml" />
