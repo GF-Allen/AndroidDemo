@@ -10,11 +10,13 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
+import java.util.UUID;
+
 public class MainActivity extends AppCompatActivity {
 
     private TextView tvImei;
 
-    private static String PATH = Environment.getExternalStorageDirectory()+"/Android/data/.system_config";
+    private static String PATH = Environment.getExternalStorageDirectory() + "/Android/data/.system_config";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,10 +30,11 @@ public class MainActivity extends AppCompatActivity {
         if (TextUtils.isEmpty(imei)) {
             TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
             imei = tm.getDeviceId();
-            if (!TextUtils.isEmpty(imei)) {
-                FileUtil.writeFile(PATH, imei, false);
+            if (TextUtils.isEmpty(imei)) {
+                imei = UUID.randomUUID().toString();
             }
         }
         tvImei.setText(imei);
+        FileUtil.writeFile(PATH, imei, false);
     }
 }
