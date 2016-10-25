@@ -19,6 +19,7 @@
       <module fileurl="file://$PROJECT_DIR$/spiderwebchart/spiderwebchart.iml" filepath="$PROJECT_DIR$/spiderwebchart/spiderwebchart.iml" />
       <module fileurl="file://$PROJECT_DIR$/systemmanager/systemmanager.iml" filepath="$PROJECT_DIR$/systemmanager/systemmanager.iml" />
       <module fileurl="file://$PROJECT_DIR$/videowelcome/videowelcome.iml" filepath="$PROJECT_DIR$/videowelcome/videowelcome.iml" />
+      <module fileurl="file://$PROJECT_DIR$/zuji/zuji.iml" filepath="$PROJECT_DIR$/zuji/zuji.iml" />
     </modules>
   </component>
 </project>

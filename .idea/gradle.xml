@@ -24,6 +24,7 @@
             <option value="$PROJECT_DIR$/spiderwebchart" />
             <option value="$PROJECT_DIR$/systemmanager" />
             <option value="$PROJECT_DIR$/videowelcome" />
+            <option value="$PROJECT_DIR$/zuji" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
